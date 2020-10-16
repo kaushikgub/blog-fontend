@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'https://ancient-mesa-45444.herokuapp.com/api',
+    baseURL: 'http://localhost:8000/api',
     withCredentials: true,
 });
 
