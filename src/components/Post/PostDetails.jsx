@@ -75,7 +75,7 @@ class PostDetails extends Component {
 
                         </div>
 
-                        <div className="col-sm-12 col-md-3">
+                        <div className="col-sm-12 col-md-3 mb-3">
                             {
                                 post.user &&
                                 <div className="my-auto">

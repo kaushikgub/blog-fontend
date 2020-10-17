@@ -117,7 +117,7 @@ class Home extends Component {
                                     <div className="col-sm-12 col-md-9">
                                         {this.state.posts && this.state.posts.data.length !== 0 && this.renderPosts()}
                                     </div>
-                                    <div className="col-sm-12 col-md-3">
+                                    <div className="col-sm-12 col-md-3 mb-3">
                                         <SideBar></SideBar>
                                     </div>
                                 </div>

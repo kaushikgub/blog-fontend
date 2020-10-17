@@ -8,12 +8,14 @@ import PostDetails from './components/Post/PostDetails';
 import Profile from './components/Home/Profile';
 import PostEdit from './components/Post/PostEdit';
 import ForgotPassword from './components/Auth/ForgotPassword';
+import ChangePassword from './components/Auth/ChangePassword';
 
 const App = () => {
   return (
     <div className="App">
       <BrowserRouter>
         <Switch>
+
           <Route exact path='/' component={Home}></Route>
           <Route path='/login' component={Login}></Route>
           <Route path='/registration' component={Registration}></Route>
@@ -23,6 +25,9 @@ const App = () => {
           <Route path='/posts/create' component={PostCreate}></Route>
           <Route path='/posts/:id/edit' component={PostEdit}></Route>
           <Route path='/posts/:id' component={PostDetails}></Route>
+
+          <Route path='/password/reset/:id/:token' component={ChangePassword}></Route>
+          
         </Switch>
       </BrowserRouter>
     </div>
