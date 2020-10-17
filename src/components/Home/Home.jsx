@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Pagination from 'react-js-pagination'
-import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import apiClient from '../../services/api'
 import GuestNavbar from '../Layouts/GuestNavbar'
@@ -13,10 +12,18 @@ class Home extends Component {
         posts: {},
         loading: true,
         redirect: null,
-        search: ''
+        search: '',
+        login: false
     }
 
     componentDidMount = () => {
+        const userId = localStorage.getItem('id');
+        if(userId){
+            this.setState({
+                ...this.state,
+                login: true
+            });
+        }
         this.getPosts();
     }
 
@@ -36,6 +43,7 @@ class Home extends Component {
         const link = `/posts?page=${page}&&search=${this.state.search}`;
         await apiClient.get(link).then(res => {
             this.setState({
+                ...this.state,
                 posts: res.data,
                 loading: false
             })
@@ -83,10 +91,9 @@ class Home extends Component {
         if (this.state.redirect) {
             return <Redirect to="/"></Redirect>
         }
-        const { auth } = this.props;
         return (
             <div>
-                { auth ? (<Navbar></Navbar>) : (<GuestNavbar></GuestNavbar>)}
+                { !this.state.login ? (<GuestNavbar></GuestNavbar>) : (<Navbar></Navbar>)}
                 {
                     this.state.loading ? (
                         <div className="text-center mt-2">
@@ -123,10 +130,4 @@ class Home extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        auth: state.auth.auth
-    }
-}
-
-export default connect(mapStateToProps)(Home);
+export default Home;

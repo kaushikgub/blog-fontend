@@ -1,8 +1,15 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:8000/api',
-    withCredentials: true,
+    
+    baseURL: 'https://ancient-mesa-45444.herokuapp.com/api',
+    headers: {
+        Authorization: {
+            toString () {
+                return `Bearer ${localStorage.getItem('token')}`
+              }
+        }
+    }
 });
 
 export default apiClient;

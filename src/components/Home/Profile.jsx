@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Redirect } from 'react-router-dom'
 import apiClient from '../../services/api'
 import Navbar from '../Layouts/Navbar'
 import PostIndex from '../Post/PostIndex'
@@ -7,7 +7,8 @@ import PostIndex from '../Post/PostIndex'
 export default class Profile extends Component {
     state = {
         profile: {},
-        loading: true
+        loading: true,
+        login: true
     }
 
     componentDidMount = () => {
@@ -17,6 +18,13 @@ export default class Profile extends Component {
                 profile: res.data,
                 loading: false
             })
+        }).catch(err=>{
+            if(err.response.status === 401){
+                this.setState({
+                    ...this.state,
+                    login: false
+                });
+            }
         })
     }
 
@@ -32,6 +40,9 @@ export default class Profile extends Component {
 
     render() {
         const {profile} = this.state;
+        if(!this.state.login){
+            return <Redirect to="/login"></Redirect>
+        }
         return (
             <div>
                 <Navbar></Navbar>

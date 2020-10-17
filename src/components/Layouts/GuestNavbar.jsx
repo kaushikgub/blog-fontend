@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { logOut } from '../../store/actions/authActions'
 
-class GuestNavbar extends Component {
+export default class GuestNavbar extends Component {
     state = {
         redirect: false
     }
     logOut = () => {
-        this.props.logOutUser(this.props.auth.user)
+        return (
+            <div></div>
+        )
     }
     render() {
         return (
@@ -21,17 +21,3 @@ class GuestNavbar extends Component {
         )
     }
 }
-
-const mapStateToProps = (state) => {
-    return {
-        auth: state.auth.auth
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        logOutUser: (user) => dispatch(logOut(user))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(GuestNavbar);

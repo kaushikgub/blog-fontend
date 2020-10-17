@@ -47,10 +47,6 @@ export default class Registration extends Component {
             })
     }
 
-    handelCheck = (e) => {
-
-    }
-
 
     render() {
 

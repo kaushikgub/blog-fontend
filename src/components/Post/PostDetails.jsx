@@ -1,18 +1,25 @@
 import React, { Component } from 'react'
 import apiClient from '../../services/api';
-import Navbar from '../Layouts/Navbar';
 import moment from 'moment';
 import { NavLink } from 'react-router-dom';
+import Navbar from '../Layouts/Navbar';
 import GuestNavbar from '../Layouts/GuestNavbar';
-import { connect } from 'react-redux';
 
 class PostDetails extends Component {
     state = {
         post: {},
-        loading: true
+        loading: true,
+        login: false
     }
     componentDidMount = () => {
         const { id } = this.props.match.params;
+        const userId = localStorage.getItem('id');
+        if(userId){
+            this.setState({
+                ...this.state,
+                login: true
+            });
+        }
         this.loadData(id);
     }
 
@@ -27,8 +34,9 @@ class PostDetails extends Component {
     loadData = async (id) => {
         await apiClient.get('/posts/' + id).then(res => {
             this.setState({
+                ...this.state,
                 post: res.data,
-                loading: false
+                loading: false,
             })
         }).catch(err => {
             console.log(err);
@@ -37,10 +45,9 @@ class PostDetails extends Component {
 
     render() {
         const { post } = this.state;
-        const { auth } = this.props;
         return (
             <section>
-                { auth ? (<Navbar></Navbar>) : (<GuestNavbar></GuestNavbar>)}
+                { !this.state.login ? (<GuestNavbar></GuestNavbar>) : (<Navbar></Navbar>)}
                 <section className="container">
                     <div className="row mt-3">
                         <div className="col-sm-12 col-md-9">
@@ -91,10 +98,5 @@ class PostDetails extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        auth: state.auth.auth
-    }
-}
 
-export default connect(mapStateToProps)(PostDetails);
+export default PostDetails;

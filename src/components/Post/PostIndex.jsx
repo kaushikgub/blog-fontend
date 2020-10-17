@@ -1,11 +1,21 @@
 import moment from 'moment';
 import React, { Component } from 'react'
-import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom'
 
 class PostIndex extends Component {
+    state = {
+        userId: null
+    }
+
+    componentDidMount = () => {
+        this.setState({
+            userId: parseInt(localStorage.getItem('id'))
+        })
+    }
+
     render() {
-        const { post, auth } = this.props;
+        const { post } = this.props;
+        const { userId } = this.state;
         return (
             <section>
                 <div className="row">
@@ -14,7 +24,7 @@ class PostIndex extends Component {
                             <h3 className="text-secondary">{post.title}</h3>
                             <small className="mt-3 ml-2 font-italic text-info">{post.user.name} - {moment(post.created_at).format('d/MMM/Y')}</small>
                             {
-                                auth && auth.user.id === post.user_id ? <NavLink className="ml-2 text-warning" to={`/posts/${post.id}/edit`}>edit</NavLink> : null
+                                userId === post.user_id ? <NavLink className="ml-2 text-warning" to={`/posts/${post.id}/edit`}><i className="fas fa-edit"></i></NavLink> : null
                             }
 
                         </div>
@@ -26,10 +36,4 @@ class PostIndex extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        auth: state.auth.auth
-    }
-}
-
-export default connect(mapStateToProps)(PostIndex)
+export default PostIndex;
