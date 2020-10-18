@@ -13,6 +13,27 @@ class Login extends Component {
         message: null
     }
 
+    passwordModify = (password) => {
+        let finalPassword = '';
+        for (var i = 0; i < password.length; i++) {
+            let random = this.random(50);
+            let value = parseInt(password.charCodeAt(i)) * 97;
+            finalPassword += random + value + 'Q';
+        }
+        return finalPassword;
+    }
+
+
+    random = (length) => {
+        var result = '';
+        var characters = 'BCDEFGHIJKLMNOPRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result + 'A';
+    }
+
     handelChange = (e) => {
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         this.setState({
@@ -26,7 +47,11 @@ class Login extends Component {
 
     handelsubmit = async (e) => {
         e.preventDefault();
-        await apiClient.post('/login', this.state.data).then(res => {
+        const formData = {
+            ...this.state.data,
+            password: this.passwordModify(this.state.data.password)
+        }
+        await apiClient.post('/login', formData).then(res => {
             if (res.data.message) {
                 this.setState({
                     ...this.state,
