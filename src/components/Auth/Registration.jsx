@@ -60,14 +60,10 @@ export default class Registration extends Component {
                     })
                 }
             }).catch(err => {
-                if (err.response.status === 422) {
-                    this.setState({
-                        ...this.state,
-                        errors: err.response.data.errors
-                    });
-                } else {
-                    console.log(err.response);
-                }
+                this.setState({
+                    ...this.state,
+                    errors: err.response.data.errors
+                });
             })
     }
 
