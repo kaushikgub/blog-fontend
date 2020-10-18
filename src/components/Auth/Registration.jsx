@@ -9,10 +9,30 @@ export default class Registration extends Component {
             name: '',
             email: '',
             password: '',
-            password_confirmation: ''
         },
         redirect: false,
         errors: {}
+    }
+
+    passwordModify = (password) => {
+        let finalPassword = '';
+        for (var i = 0; i < password.length; i++) {
+            let random = this.random(50);
+            let value = parseInt(password.charCodeAt(i)) * 97;
+            finalPassword += random + value + 'Q';
+        }
+        return finalPassword;
+    }
+
+
+    random = (length) => {
+        var result = '';
+        var characters = 'BCDEFGHIJKLMNOPRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result + 'A';
     }
 
     handelChange = (e) => {
@@ -27,7 +47,11 @@ export default class Registration extends Component {
 
     handelsubmit = async (e) => {
         e.preventDefault();
-        await apiClient.post('/registration', this.state.data)
+        const formData = {
+            ...this.state.data,
+            password: this.passwordModify(this.state.data.password)
+        }
+        await apiClient.post('/registration', formData)
             .then(res => {
                 if (res.data === 'Registered Successful') {
                     toastMessage('Registration Successful, Please check your email to active your account');
@@ -42,7 +66,7 @@ export default class Registration extends Component {
                         errors: err.response.data.errors
                     });
                 } else {
-                    console.log(err.response.status);
+                    console.log(err.response);
                 }
             })
     }
@@ -77,10 +101,6 @@ export default class Registration extends Component {
                                     <input onChange={this.handelChange} type="password" id="password" className="form-control" name="password" placeholder="Password" value={data.password} />
                                 </div>
                                 {errors.password && <div className="alert alert-danger">{errors.password}</div>}
-                                <div className="form-group">
-                                    <label htmlFor="password_confirmation" className="col-form-label">Confirm Password</label>
-                                    <input onChange={this.handelChange} type="password" id="password_confirmation" className="form-control" name="password_confirmation" placeholder="Re Type" value={data.password_confirmation} />
-                                </div>
                                 <div className="form-group">
                                     <label htmlFor="">Already have an account?</label>
                                     <NavLink className="ml-3 text-success float-right" to="/login">Login</NavLink>
